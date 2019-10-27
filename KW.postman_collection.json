@@ -1,0 +1,137 @@
+{
+	"info": {
+		"_postman_id": "1afe2369-7cb4-4331-9c7b-efe90d0fc198",
+		"name": "KW",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Get All Checklist",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{kwBaseURL}}checklist",
+					"host": [
+						"{{kwBaseURL}}checklist"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get One Checklist",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{kwBaseURL}}checklist/36",
+					"host": [
+						"{{kwBaseURL}}checklist"
+					],
+					"path": [
+						"36"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Checklist",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"data\": {\n        \"attributes\": {\n            \"object_domain\": \"contact\",\n            \"object_id\": \"1\",\n            \"due\": \"2019-01-25T07:50:14+00:00\",\n            \"urgency\": 1,\n            \"description\": \"Need to verify this guy house.\",\n            \"items\": [\n                \"Visit his house\",\n                \"Capture a photo\",\n                \"Meet him on the house\"\n            ],\n            \"task_id\": \"123\"\n        }\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{kwBaseURL}}checklist",
+					"host": [
+						"{{kwBaseURL}}checklist"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Checklist",
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"data\": {\n        \"type\": \"checklists\",\n        \"id\": 1,\n        \"attributes\": {\n            \"object_domain\": \"contact\",\n            \"object_id\": \"1\",\n            \"description\": \"Need to verify this guy house.\",\n            \"is_completed\": false,\n            \"completed_at\": null\n        },\n        \"links\": {\n            \"self\": \"https://dev-kong.command-api.kw.com/checklists/50127\"\n        }\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{kwBaseURL}}checklist/1",
+					"host": [
+						"{{kwBaseURL}}checklist"
+					],
+					"path": [
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Checklist",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"data\": {\n        \"type\": \"checklists\",\n        \"id\": 1,\n        \"attributes\": {\n            \"object_domain\": \"contact\",\n            \"object_id\": \"1\",\n            \"description\": \"Need to verify this guy house.\",\n            \"is_completed\": false,\n            \"completed_at\": null\n        },\n        \"links\": {\n            \"self\": \"https://dev-kong.command-api.kw.com/checklists/50127\"\n        }\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{kwBaseURL}}checklist/2",
+					"host": [
+						"{{kwBaseURL}}checklist"
+					],
+					"path": [
+						"2"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
