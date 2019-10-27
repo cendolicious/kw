@@ -20,6 +20,7 @@ class ChecklistCreateTransformer extends TransformerAbstract
                   'due' => $checklist->due,
                   'urgency' => $checklist->urgency,
                   'completed_at' => $checklist->completed_at,
+                  'created_by' => $checklist->created_by,
                   'updated_by' => $checklist->last_update_by,
                   'created_at' => Carbon::parse($checklist->created_at)->format('c'),
                   'updated_at' => Carbon::parse($checklist->updated_at)->format('c')

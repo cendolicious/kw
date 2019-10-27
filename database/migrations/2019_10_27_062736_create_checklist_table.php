@@ -24,9 +24,10 @@ class CreateChecklistTable extends Migration
             $table->timestamp('due')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->integer('urgency')->default(null);
             $table->timestamp('completed_at')->default(null);
-            $table->integer('last_update_by')->default(null);
-            $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP'));
+            $table->integer('created_by')->default(null);
+            $table->integer('updated_by')->default(null);
             $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
+            $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP'));
         });
     }
 
