@@ -21,7 +21,8 @@ $factory->define(App\Models\Checklist::class, function (Faker\Generator $faker) 
         'due' => $faker->date(),
         'urgency' => $faker->numberBetween(0, 9),
         'completed_at' => $faker->date(),
-        'last_update_by' => $faker->randomNumber(4),
+        'updated_by' => $faker->randomNumber(4),
+        'created_by' => $faker->randomNumber(4),
         'updated_at' => $faker->date(),
         'created_at' => $faker->date()
     ];
