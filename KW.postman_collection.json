@@ -9,7 +9,18 @@
 			"name": "Get All Checklist",
 			"request": {
 				"method": "GET",
-				"header": [],
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "{{kwAccessToken}}",
+						"type": "text"
+					}
+				],
 				"url": {
 					"raw": "{{kwBaseURL}}checklist",
 					"host": [
@@ -23,14 +34,25 @@
 			"name": "Get One Checklist",
 			"request": {
 				"method": "GET",
-				"header": [],
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{kwAccessToken}}",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
 				"url": {
-					"raw": "{{kwBaseURL}}checklist/36",
+					"raw": "{{kwBaseURL}}checklist/3",
 					"host": [
 						"{{kwBaseURL}}checklist"
 					],
 					"path": [
-						"36"
+						"3"
 					]
 				}
 			},
@@ -45,6 +67,11 @@
 						"key": "Content-Type",
 						"name": "Content-Type",
 						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "{{kwAccessToken}}",
 						"type": "text"
 					}
 				],
@@ -75,6 +102,11 @@
 						"key": "Content-Type",
 						"name": "Content-Type",
 						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "{{kwAccessToken}}",
 						"type": "text"
 					}
 				],
@@ -109,6 +141,11 @@
 						"name": "Content-Type",
 						"type": "text",
 						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "{{kwAccessToken}}",
+						"type": "text"
 					}
 				],
 				"body": {
