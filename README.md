@@ -1,2 +1,0 @@
-# kw
-Project purpose
