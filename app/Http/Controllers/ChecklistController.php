@@ -1,8 +1,10 @@
 <?php
 namespace App\Http\Controllers;
+use App\Libraries\ChecklistLibrary;
 use App\Models\Checklist;
 use App\Transformers\ChecklistCreateTransformer;
 use App\Transformers\ChecklistTransformer;
+use App\Responses\ChecklistResponse;
 use Illuminate\Http\Request;
 use League\Fractal\Manager;
 use League\Fractal\Resource\Item;
@@ -17,9 +19,11 @@ class ChecklistController extends Controller
      * @return void
      */
     private $fractal;
+    private $checkListResponse;
     public function __construct()
     {
         $this->fractal = new Manager();
+        $this->checkListResponse = new ChecklistResponse();
     }
     /**
      * GET /checklists
@@ -27,17 +31,15 @@ class ChecklistController extends Controller
      * @return array
      */
     public function getList(){
-        $paginator = Checklist::paginate();
-        $checklist = $paginator->getCollection();
-        $resource = new Collection($checklist, new ChecklistTransformer());
-        $resource->setPaginator(new IlluminatePaginatorAdapter($paginator));
-        return $this->fractal->createData($resource)->toArray();
+
+        $checklist = Checklist::paginate();
+        return $this->checkListResponse->generateResponsePagination(ChecklistLibrary::SUCCESS_GET_DATA, $checklist);
+
     }
 
     public function getOne($id){
         $checklist = Checklist::find($id);
-        $resource = new Item($checklist, new ChecklistTransformer());
-        return $this->fractal->createData($resource)->toArray();
+        return $this->checkListResponse->generateResponse(ChecklistLibrary::SUCCESS_GET_DATA, $checklist);
     }
 
     public function create(Request $request){
@@ -47,8 +49,7 @@ class ChecklistController extends Controller
             'data.attributes.object_id' => 'bail|required',
         ]);
         $checklist = Checklist::create($request->all()['data']['attributes']);
-        $resource = new Item($checklist, (new ChecklistCreateTransformer()));
-        return $this->fractal->createData($resource)->toArray();
+        return $this->checkListResponse->generateResponse(ChecklistLibrary::SUCCESS_CREATE_DATA, $checklist);
     }
 
     public function update($id, Request $request){
@@ -56,32 +57,23 @@ class ChecklistController extends Controller
         $this->validate($request, [
             'object_domain' => 'max:255',
         ]);
-        //Return error 404 response if product was not found
-        if(!Checklist::find($id)) return $this->errorResponse('Checklist not found!', 404);
-        $checklist = Checklist::find($id)->update($request->all()['data']['attributes']);
+
+        //get data by id
+        $checklist = Checklist::find($id);
         if($checklist){
-            //return updated data
-            $resource = new Item(Checklist::find($id), new ChecklistTransformer());
-            return $this->fractal->createData($resource)->toArray();
+            $checklist->update($request->all()['data']['attributes']);
         }
-        //Return error 400 response if updated was not successful
-        return $this->errorResponse('Failed to update checklist!', 400);
+        return $this->checkListResponse->generateResponse(ChecklistLibrary::SUCCESS_UPDATE_DATA, $checklist);
     }
 
     public function delete($id){
 
-        //Return error 404 response if product was not found
-        if(!Checklist::find($id)) return $this->errorResponse('Checklist not found!', 404);
-        //Return 410(done) success response if delete was successful
-        if(Checklist::find($id)->delete()){
-            return $this->customResponse('Checklist deleted successfully!', 204);
+        //get data by id
+        $checklist = Checklist::find($id);
+        if($checklist){
+            $checklist->delete();
         }
-        //Return error 400 response if delete was not successful
-        return $this->errorResponse('Failed to delete checklist!', 400);
+        return $this->checkListResponse->generateResponse(ChecklistLibrary::SUCCESS_DELETE_DATA, $checklist, 204);
     }
 
-    public function customResponse($message = 'success', $status = 200)
-    {
-        return response(['status' =>  $status, 'message' => $message], $status);
-    }
 }
