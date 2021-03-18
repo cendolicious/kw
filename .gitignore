@@ -1,5 +1,10 @@
 /vendor
+/config
 /.idea
 Homestead.json
 Homestead.yaml
+composer.lock
+composer.phar
 .env
+auth.json
+*.iml

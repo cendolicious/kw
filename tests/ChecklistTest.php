@@ -1,8 +1,8 @@
 <?php
 
 class ChecklistTest extends TestCase {
-    //Test for Checklist [GET]
 
+    //Test for Checklist [GET]
     public function testShouldReturnAllChecklist(){
         $method = 'GET';
         $url = 'checklist/';
@@ -12,7 +12,7 @@ class ChecklistTest extends TestCase {
             'Authorization' => env('KW_ACCESS_TOKEN')
         ];
 
-        $this->json($method, $url, $data, $headers)
+        return $this->json($method, $url, $data, $headers)
             ->seeStatusCode(200)
             ->seeJsonStructure([
                 'data' => ['*' =>
@@ -27,7 +27,8 @@ class ChecklistTest extends TestCase {
                             'due',
                             'urgency',
                             'completed_at',
-                            'last_update_by',
+                            'created_by',
+                            'updated_by',
                             'updated_at',
                             'created_at'
                         ],
@@ -50,18 +51,21 @@ class ChecklistTest extends TestCase {
     }
 
     public function testShouldReturnOneChecklist(){
-        $faker = Faker\Factory::create();
-        $randomId = $faker->numberBetween(0,9);
+
+        //GET DATA
+        $response = self::testShouldReturnAllChecklist();
+        $response = json_decode($response->response->getContent());
+        $checklist = $response->data[0];
 
         $method = 'GET';
-        $url = 'checklist/'.$randomId;
+        $url = 'checklist/'.$checklist->id;
         $data = [];
         $headers = [
             'Content-Type' => 'application/json',
             'Authorization' => env('KW_ACCESS_TOKEN')
         ];
 
-        $this->json($method, $url, $data, $headers)
+        return $this->json($method, $url, $data, $headers)
         ->seeStatusCode(200)
         ->seeJsonStructure([
             'data' => [
@@ -75,7 +79,8 @@ class ChecklistTest extends TestCase {
                     'due',
                     'urgency',
                     'completed_at',
-                    'last_update_by',
+                    'created_by',
+                    'updated_by',
                     'updated_at',
                     'created_at'
                 ],
@@ -110,7 +115,7 @@ class ChecklistTest extends TestCase {
             'Authorization' => env('KW_ACCESS_TOKEN')
         ];
 
-        $this->json($method, $url, $data, $headers)
+        return $this->json($method, $url, $data, $headers)
             ->seeStatusCode(200)
             ->seeJsonStructure([
                 'data' => [
@@ -139,15 +144,20 @@ class ChecklistTest extends TestCase {
     }
 
     public function testShouldUpdateOneChecklist(){
+
+        //GET DATA
+        $response = self::testShouldCreateOneChecklist();
+        $response = json_decode($response->response->getContent());
+        $checklist = $response->data;
+
         $faker = Faker\Factory::create();
-        $randomId = $faker->numberBetween(0,9);
 
         $method = 'PATCH';
-        $url = 'checklist/'.$randomId;
+        $url = 'checklist/'. $checklist->id;
         $data = [
             "data" => [
                 "type" => "checklists",
-                "id" => $randomId,
+                "id" => $checklist->id,
                 "attributes" => [
                     "object_domain" => $faker->word,
                     "object_id" => $faker->randomNumber(3),
@@ -157,7 +167,7 @@ class ChecklistTest extends TestCase {
                     "created_at" => $faker->date(),
                 ],
                 "links" => [
-                    'self' => url().'/checklist/'.$randomId
+                    'self' => url().'/checklist/'. $checklist->id
                 ],
             ]
         ];
@@ -181,7 +191,7 @@ class ChecklistTest extends TestCase {
                         'urgency',
                         'completed_at',
                         'created_at',
-                        'last_update_by',
+                        'updated_by',
                         'updated_at'
                     ],
                     'links' => [
@@ -193,11 +203,14 @@ class ChecklistTest extends TestCase {
     }
 
     public function testShouldDeleteOneChecklist(){
-        $faker = Faker\Factory::create();
-        $randomId = $faker->numberBetween(0,9);
+
+        //GET DATA
+        $response = self::testShouldCreateOneChecklist();
+        $response = json_decode($response->response->getContent());
+        $checklist = $response->data;
 
         $method = 'DELETE';
-        $url = 'checklist/'.$randomId;
+        $url = 'checklist/'.$checklist->id;
         $data = [];
         $headers = [
             'Content-Type' => 'application/json',
